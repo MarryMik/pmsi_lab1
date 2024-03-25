@@ -1,8 +1,22 @@
 import express from "express";
 import mongoose from "mongoose";
-import { createServer } from "http";
+import authRoute from "./routers/auth.js"
+import usersRoute from "./routers/users.js"
+import cookieParser from "cookie-parser";
+import cors from "cors"
 const app = express();
-/*
+
+const connect = async ()=>{
+    try{
+        await mongoose.connect("")
+        console.log("Підключено до бази даних.")
+    }catch(error){
+        throw error;
+    }
+}
+mongoose.connection.on("disconnected", ()=>{
+    console.log("mongoDB відключено")
+});
 app.use((req, res, next)=>{
     res.header("Access-Control-Allow-Credentials",true);
     next();
@@ -10,65 +24,26 @@ app.use((req, res, next)=>{
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-    origin: "http://localhost:3300",
+    origin: "http://localhost:3000",
 }))
-*/
-//app.use("/auth", authRouter);
-//app.use("/users", userRouter);
-/*
+app.get('/', (req,res)=>{
+    res.json("Привіт сервер!")
+})
+app.use("/auth", authRoute);
+app.use("/users", usersRoute);
 app.use((err,req,res,next)=>{
     const errorStatus = err.status || 500
-    const errorMessage = err.message || "Something went wrong!"
+    const errorMessage = err.message || "Щось пішло не так!"
     return res.status(errorStatus).json({
-        success: false,
+        success:false,
         status: errorStatus,
         message: errorMessage,
-        stack:err.stack
+        stack: err.stack
     })
-})
-*/
-
-
-
-mongoose.connect("")
-.then(()=>console.log("DB is connected"))
-.catch(()=>console.log("Error with db connection!"))
-const UserSchema=new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    type: {
-        type: String,
-        required: true
-    },
-    status:{
-        type: String,
-        required: true
-    }
-})
-
-const User = mongoose.model("users", UserSchema)
-app.get('/', (req, res)=>{
-   /* User.create({
-        name: "user2",
-        password: "12345",
-        type:"user",
-        status:"active"
-    })
-    .then((user)=> res.send(user))
-    .catch((error)=>res.send(error))
-    */
-   User.find()
-   .then((user)=> res.send(user))
-    .catch((error)=>res.send(error))
 })
 
 const port = 3300;
-const server = createServer(app);
-server.listen(port, ()=>console.log("Smth"))
+app.listen(port, ()=>{
+    connect();
+    console.log("Підключено до серверу.")
+})
