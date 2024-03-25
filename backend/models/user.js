@@ -18,6 +18,9 @@ const UserSchema=new Schema({
     status:{
         type: String,
         required: true
+    },
+    restriction:{
+        type: Boolean,
     }
 })
 
