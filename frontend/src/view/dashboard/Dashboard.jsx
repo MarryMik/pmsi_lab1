@@ -13,7 +13,7 @@ const Dashboard =() =>{
             <div className="dashboard__main">
                 <div className="block-board">
                     <div className="block-board__search-wrap">
-                        <input type="text" className="block-board__name" name="name" onChange={handleChange}/>
+                        <input type="text" className="block-board__name" name="name" />
                         <button className="block-board__search-button">Пошук</button>
                     </div>
                 </div>
@@ -27,7 +27,7 @@ const Dashboard =() =>{
             
             <div className="create-user">
                 <div className="create-user__wrap">
-                    <input className="create-user__name-text" name="" placeholder="Введіть ім'я" onChange={handleChange2}/>
+                    <input className="create-user__name-text" name="" placeholder="Введіть ім'я" />
                     <button className="create-user__create-button">Створити</button>
                 </div>
             </div>

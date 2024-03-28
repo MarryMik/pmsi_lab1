@@ -11,6 +11,7 @@ import Register from './view/register/Register';
 import Dashboard from './view/dashboard/Dashboard';
 import PasswordChange from './view/passwordChange/PasswordChange';
 import Account from './view/account/Account'
+import { RouterProvider } from 'react-router-dom';
 
 function App() {
   const queryClient = new QueryClient();

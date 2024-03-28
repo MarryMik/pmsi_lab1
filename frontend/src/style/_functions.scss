@@ -1,0 +1,69 @@
+@import "variables";
+//функція для визначення розмірів
+@function find-size($val1, $val2, $val3){
+    @if $val1==0{
+        @return 0;
+    }@else{
+        @return calc(($val1*$val2)/$val3)
+    }
+};
+//функція для зазначення радіуса рамки
+@function border_rad($pxl){
+    @return calc(($pxl*1rem)/16);
+};
+// mixin для задання висоти і ширини елементу
+@mixin size($w, $h, $w_res: $width-main, $h_res: $height-main){
+    width: find-size($w,100vw, $w_res);
+    height: find-size($h,100vh,$h_res);
+}
+// mixin для задання висоти елементу
+@mixin height($h, $h_res: $height-main ){
+    height: find-size($h,100vh,$h_res);
+}
+// mixin для задання ширини елементу
+@mixin width($w, $w_res: $width-main){
+    width: find-size($w,100vw, $w_res);
+}
+// mixin для задання властивості margin
+@mixin margin($t, $r, $b, $l, $w_res: $width-main, $h_res: $height-main){
+    margin-top: find-size($t,100vh,$h_res);
+    margin-right: find-size($r,100vw, $w_res);
+    margin-bottom: find-size($b,100vh,$h_res);
+    margin-left: find-size($l,100vw, $w_res);    
+}
+// mixin для задання властивості padding
+@mixin padding($t, $r, $b, $l, $w_res: $width-main, $h_res: $height-main){
+    padding-top: find-size($t,100vh,$h_res);
+    padding-right: find-size($r,100vw, $w_res);
+    padding-bottom: find-size($b,100vh,$h_res);
+    padding-left: find-size($l,100vw, $w_res);    
+}
+// mixin для задання властивості box-shadow
+@mixin shadow($t, $r, $b, $l,$color, $w_res: $width-main, $h_res: $height-main){
+    box-shadow: find-size($t,100vh,$h_res) find-size($r,100vw, $w_res) find-size($b,100vh,$h_res) find-size($l,100vw, $w_res) $color;
+}
+// mixin для визначення позиції елемента відосно верхнього і лівого країв
+@mixin position_t_l($t, $l, $w_res: $width-main, $h_res: $height-main){
+    top: find-size($t,100vh,$h_res);
+    left: find-size($l,100vw, $w_res); 
+}
+// mixin для визначення позиції елемента відосно нижнього і лівого країв
+@mixin position_l_b( $l, $b, $w_res: $width-main, $h_res: $height-main){
+    left: find-size($l,100vw, $w_res);
+    bottom: find-size($b,100vh,$h_res);
+}
+// mixin для визначення позиції елемента відосно нижнього і правого країв
+@mixin position_r_b( $r, $b, $w_res: $width-main, $h_res: $height-main){
+    right: find-size($r,100vw, $w_res);
+    bottom: find-size($b,100vh,$h_res);
+}
+// mixin для визначення позиції елемента відосно верхнього і правого країв
+@mixin position_t_r($t, $r, $w_res: $width-main, $h_res: $height-main){
+    top: find-size($t,100vh,$h_res);
+    right: find-size($r,100vw, $w_res);
+}
+// mixin для зазначення розміру шрифтів
+@mixin font_size($size, $line_height, $h_resolution: $height-main){
+    font-size: find-size($size,100vh,$h_resolution);
+    line-height: find-size($line_height,100vh,$h_resolution);
+}

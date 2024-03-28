@@ -1,5 +1,6 @@
 import React from 'react'
 import "./login.scss";
+import {useContext, useState} from 'react'
 import { AuthContext } from '../../context/authContext';
 import {Link, useNavigate} from "react-router-dom";
 
@@ -9,7 +10,7 @@ const Login = ()=>{
         password: "",
     });
     const [err, setErr]= useState (null);
-    const navigate = useNamvigate();
+    const navigate = useNavigate();
     const handleChange = (e) =>{
         setInputs((prev) =>({...prev, [e.target.name]: e.target.value}));
     };

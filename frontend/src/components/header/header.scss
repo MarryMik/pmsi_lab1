@@ -1,0 +1,10 @@
+@import "../../style/fonts";
+@import "../../style/variables";
+@import "../../style/functions";
+
+.nav-bar{
+    &__wrap{
+        background-color: $black_color;
+        color: white;
+    }
+}

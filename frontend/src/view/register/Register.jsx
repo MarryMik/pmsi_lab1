@@ -3,8 +3,10 @@ import "./register.scss";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 const Register =()=>{
-    const name = useReff(null);
-    const password = useRef(null);
+  const passwordRef = useRef(null);
+  const passwCheck = useRef(null);
+  const submitRef = useRef(null);
+  const errorRef =useRef(null);
     const regex = new RegExp("");
     const navigate = useNavigate();
     const [passw, passwCh]=useState({

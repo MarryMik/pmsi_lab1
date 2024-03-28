@@ -1,0 +1,22 @@
+//змінні характкристик розмірів екрану
+$width-main: 1788;
+$width-medium: 1081;
+$width-mini: 760;
+$height-main: calc(($width-main*9)/16);
+$height-medium: calc(($width-medium*9)/16);
+$height-mini: calc(($width-mini*9)/16);
+//змінні всіх кольорів
+$main_color: #53c8ed;
+$form_back_color: #b7b9b9;
+$form_input_color: #D9D9D9;
+$pressed_buttton-color: #cdfcff;
+
+$trtmnt_bckgr: #ceffcd;
+$record_bcrgr: #feffcd;
+$procedure_bcrgr: #ffcddf;
+$appointment_color: #82ef80;
+$black_color: #000000;
+
+$font_color: #475ead; 
+$background: #5723a9;
+$error_color: #F11320;
