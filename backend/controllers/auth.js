@@ -51,15 +51,15 @@ export const login = async (req, res, next)=>{
 }
 export const passwordUpdate = async(req, res, next)=>{
     try{
-        const user = await User.findById( req.params.id);
+        const user = await User.findOne({name: req.body.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
         const updatePassw = await User.findByIdAndUpdate(
-            req.params.id,
+            user._id,
             {password: hash}
         )
-        res.status(200).json(updatePassw);
+        res.status(200).json("Пароль було відновлено");
     }catch(err){
         newt(err);
     }
@@ -70,20 +70,38 @@ export const passwordCheck = async(req,res,next)=>{
         const user = await User.findById( req.params.id);
         if(!user)return next (createError(404, "Користувача не знайдено!"));
         const isPasswordCorrect = await bcrypt.compare(
-            req.body.password,
+            req.query.password,
             user.password
         );
         if(!isPasswordCorrect){
             return next(createError(400, "Неправильний пароль або ім'я"));
         }else{
-            res.status(200).json(user)
+            res.status(200).json(user.restriction)
         }
 
     }catch(err){
         next(err);
     }
-    
+}
 
+export const checkRestriction = async(req,res,next)=>{
+    try{
+        const user = await User.findOne({name: req.query.name});
+        if(!user)return next (createError(404, "Користувача не знайдено!"));
+        res.status(200).json(user.restriction)
+        
+    }catch(err){
+        next(err);
+    }
+}
+export const doYouHavePassw = async(req,res,next)=>{
+    try{
+        const user = await User.findOne({name: req.query.name});
+        if(!user)return next (createError(404, "Користувача не знайдено!"));
+        res.status(200).json(user.password.length);
+    }catch(err){
+        next(err);
+    }
 }
 
 export const logout = (req,res)=>{

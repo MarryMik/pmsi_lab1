@@ -21,6 +21,7 @@ const UserSchema=new Schema({
     },
     restriction:{
         type: Boolean,
+        required: true
     }
 })
 

@@ -32,13 +32,18 @@
         font-family: OpenSans;
         @include font_size(18,20);
         color: white;
+        &_error{
+            font-family: OpenSans;
+            @include font_size(18,20);
+            color: $error_color;
+        }
     }
     &__field_bottom{
         grid-column-start: 1;
         grid-column-end: 3;
         display: flex;
         align-items: center;
-        justify-content: end;
+        justify-content: space-between;
         
     }
     &__button{

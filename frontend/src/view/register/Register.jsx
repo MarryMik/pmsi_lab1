@@ -7,7 +7,7 @@ const Register =()=>{
   const passwCheck = useRef(null);
   const submitRef = useRef(null);
   const errorRef =useRef(null);
-    const regex = new RegExp("");
+    const regex = new RegExp(/^([a-zA-Z]\p{P})+[a-zA-Z]$/, "iu");
     const navigate = useNavigate();
     const [passw, passwCh]=useState({
         passwCheck:"",
@@ -15,16 +15,18 @@ const Register =()=>{
     const [inputs, setInputs]=useState({
         name: "",
         password: "",
-        type:"user",
-        status: "active"
     })
     const [err, setErr] = useState(null);
     const handleChange = (e) =>{
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
+    const [restrictionUser, setRestriction]=useState(null);
+   
     const CheckPassword = (e) =>{
         passwCh({ [e.target.name]: e.target.value });    
     }
+    if(passwCheck.current!==null && submitRef.current!==null && errorRef.current!==null && passwordRef.current!==null ){
+
     if(passw.passwCheck!==inputs.password){
         passwCheck.current.style.borderColor="red";
         passwCheck.current.style.borderWidth="3px";
@@ -36,44 +38,59 @@ const Register =()=>{
         submitRef.current.style.pointerEvents = 'auto';
         errorRef.current.innerText="";
       }
-    if(inputs.password.match(regex)!==null){
-        passwordRef.current.style.borderWidth="0px";
-        errorRef.current.innerText="";
-    }
-    const handleClick = async (e) => {
-        e.preventDefault();
-        if( inputs.name=="" || inputs.password==""){
-          errorRef.current.innerText="Введіть необхідні дані!"
-        }else{
-          if(!inputs.password.match(regex) && passwordRef.current!==null && passwordRef.current!=="undefined"){
-            errorRef.current.innerText="Пароль не відповідає неохідним вимогам безпеки!";
-            passwordRef.current.style.borderColor="red";
-            passwordRef.current.style.borderWidth="3px";
-            passwordRef.current.style.borderStyle="solid";
-          }else{
+
+      if(restrictionUser===true){
+        if(regex.test(inputs.password)){
             errorRef.current.innerText="";
-            try {
-              await axios.post("http://localhost:3300/auth/register", inputs).then(res=>{
-                if(res.data=="Користувач був створений."){
-                  navigate("/login");
-                }else{
-                  alert("Щось пішло не так! Ви не зареєстровані. Спробуйте ще раз.")
-                }
+        }else{
+
+            errorRef.current.innerText="! Новий пароль має відповідати наступним обмеженням: Чергування букв, знаків пунктуації та знову букв";
+        }
+      }
+  }
+    const handleClick = async (e) => {
+      e.preventDefault();
+      if(restrictionUser===null){
+        if(inputs.name.length>0){
+          try{
+              const res = await axios.get("http://localhost:3300/auth/restriction/", {
+                  params: {
+                    name: inputs.name,
+                  }}).then((resp)=>{
+                  setRestriction(resp.data);  
+  
               });
-            } catch (err) {
-              setErr(err.response.data);
-            }
+              
+          }catch(err){
+              console.log(err);
+          }
+      }
+      
+    }else{
+      if(regex.test(inputs.password)&& inputs.password===passw.passwCheck ){
+        try{
+            await axios.put("http://localhost:3300/auth/newpassword",inputs).then(res=>{
+                if(res.data=="Пароль було відновлено"){
+                    alert(res.data);
+                    navigate("/login");
+                }else{
+                    alert("Щось пішло не так!");
+                }
+            })
+        }catch(err){
+            setErr(err.response.data.message)
         }
-        }
-      };
+    }
+    }    
+  }
       return (
         <div className='registration'>
           <form className='registration__form'>
               <p className='form__text'>Ім'я:</p>
-              <input type="text" className='form__input' name="name" onChange={handleChange}/>
+              <input type="text" className='form__input' name="name" placeholder="Введіть ще раз ім'я" onChange={handleChange}/>
             
               <p className='form__text'>Пароль:</p>
-              <input type="password" className='form__input' name='password'  placeholder='Введіть пароль' ref={passwordRef} onChange={handleChange}/>
+              <input type="password" className='form__input' name='password'  placeholder='Введіть новий пароль' ref={passwordRef} onChange={handleChange}/>
             
               <p className='form__text'>Перевірка паролю:</p>
               <input type="password" className='form__input' name='passwCheck'   onChange={CheckPassword} ref={passwCheck} placeholder='Введіть пароль ще раз'/>

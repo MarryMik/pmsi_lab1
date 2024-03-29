@@ -1,5 +1,5 @@
 import axios from "axios";
 export const makeRequest = axios.create({
-    baseURL: "http:localhost:3300/",
+    baseURL: "http://localhost:3300/",
     withCredentials:true,
 })

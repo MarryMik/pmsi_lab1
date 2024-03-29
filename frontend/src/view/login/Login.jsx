@@ -3,8 +3,10 @@ import "./login.scss";
 import {useContext, useState} from 'react'
 import { AuthContext } from '../../context/authContext';
 import {Link, useNavigate} from "react-router-dom";
+import axios from 'axios';
 
 const Login = ()=>{
+    const [counter, setCounter]=useState(0);
     const [inputs, setInputs]= useState({
         name: "",
         password: "",
@@ -17,13 +19,34 @@ const Login = ()=>{
     const {login} = useContext(AuthContext);
     const handleLogin = async(e) =>{
         e.preventDefault();
-        try{
+        if(inputs.password.length===0 && inputs.name!==0){
+          await axios.get("http://localhost:3300/auth/password", {
+            params:{
+              name: inputs.name,
+            }
+          }).then((res)=>{
+            if(res.data===0) navigate("/register")
+            else setErr("Введіть пароль.")
+          })
+        }else{
+          try{
             await login(inputs);
             navigate("/account")
-        }catch(err){
-            console.log(err);
+          }catch(err){
+              setErr(err.response.data.message)
+              console.log(err.response.data);
+              setCounter(counter+1);
+
+          }
         }
+        
     } 
+    
+    
+    console.log(counter)
+    if(counter===3){
+      navigate("/");
+    }
 
     return(
         <div className='login'>
