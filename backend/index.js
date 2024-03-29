@@ -8,7 +8,7 @@ const app = express();
 
 const connect = async ()=>{
     try{
-        await mongoose.connect("");
+
         console.log("Підключено до бази даних.")
     }catch(error){
         throw error;

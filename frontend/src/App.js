@@ -27,7 +27,7 @@ function App() {
   const Layout2 =()=>{
       return(
         <QueryClientProvider client={queryClient}>
-          <Header2/>
+         <Header2/>
           <Outlet/>
         </QueryClientProvider>
       )
@@ -40,23 +40,22 @@ function App() {
       </QueryClientProvider>
     )
 }
+
 const UserFilter =({children})=>{
-  if(!currentUser){
+  if(!currentUser ){
     return <Navigate to="/" />;
   }else{
-    if (currentUser.type=="admin"){
-      return <Layout2/>
-    }else if (currentUser.type=="user"){
-      return <Layout3/>
-    }else{
-      return <Layout/>
+    if (currentUser.type==='admin'){
+      return <Layout2 />
+    }else if (currentUser.type==='user'){
+      return <Layout3 />
     }
   }
 }
 const router = createBrowserRouter([
   {
     path:"/",
-    element:( <Layout/>),
+    element:( <Layout />),
     children:[
       {
         path:"/",
@@ -72,31 +71,31 @@ const router = createBrowserRouter([
       }
     ]
   },
-  {
+    {
     path:"/",
-    element: (<UserFilter/>),
+    element: <UserFilter/>,
     children:[
       {        
         path:"/account",
-        element: <Dashboard/>
+        element: <Account />
       },
       {
         path:"/passwordChange",
-        element: <PasswordChange/>
+        element: <PasswordChange />
       }
     ]
   },
   {
     path:"/",
-    element: (<UserFilter/>),
+    element: <UserFilter/>,
     children:[
       {        
         path:"/account",
-        element: <Account/>
+        element: <Dashboard />
       },
       {
         path:"/passwordChange",
-        element: <PasswordChange/>
+        element: <PasswordChange />
       }
     ]
   },
@@ -105,7 +104,7 @@ return (
   <div>
     <RouterProvider router={router}/>
   </div>
-)
+);
 }
 
 export default App;

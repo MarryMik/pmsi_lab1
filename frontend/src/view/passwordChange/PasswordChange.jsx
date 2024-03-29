@@ -1,7 +1,14 @@
-import React from "react";
+import {React, useState, useRef} from 'react';
 import "./passwordChange.scss"
+import axios from 'axios';
 
 const PasswordChange =()=>{
+    const oldPassw = useRef(null);
+    const passwordRef = useRef(null);
+    const passwCheck = useRef(null);
+
+    const submitRef = useRef(null);
+    const errorRef =useRef(null);
     return(
         <div className="pass-ch">
             <div className="pass-ch__wrap">

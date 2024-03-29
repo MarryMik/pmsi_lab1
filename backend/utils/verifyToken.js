@@ -16,7 +16,7 @@ export const verifyToken = (req, res, next)=>{
 
 export const verifyUser = (req, res, next)=>{
     verifyToken(req,res,next, () =>{
-        if(req.user.id === req.params.id || req.user.type==="admin"){
+        if(req.user.id === req.params._id || req.user.type==="admin"){
             next();
         }else{
             return next (createError(403, "Ви не авторизовані!"))

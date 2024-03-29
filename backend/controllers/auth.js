@@ -33,19 +33,56 @@ export const login = async (req, res, next)=>{
         if(!isPasswordCorrect){
             return next(createError(400, "Неправильний пароль або ім'я"));
         }
-        const token = jwt.sign(
-            {id: user._id, isAdmin: user.isAdmin},
-            process.env.JWT
-        );
-        const {password, isAdmin, ...otherDetails}= user._doc;
+        const token = jwt.sign
+        ({  id: user._id, 
+            type: user.type}, 
+            "Hnvl743Hsfu&49fnHGiagbHFE3Hnvsd7");
+        
+        const {password, ...otherDetails}= user._doc;
         res.cookie("acces_token", token,{
             httpOnly: true,
         }).status(200)
-        .json({details:{...otherDetails}, isAdmin});            
+        .json({details:{...otherDetails}});            
         
     }catch (err){
         next(err);
     }
+
+}
+export const passwordUpdate = async(req, res, next)=>{
+    try{
+        const user = await User.findById( req.params.id);
+        if(!user)return next (createError(404, "Користувача не знайдено!"));
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(req.body.password, salt);
+        const updatePassw = await User.findByIdAndUpdate(
+            req.params.id,
+            {password: hash}
+        )
+        res.status(200).json(updatePassw);
+    }catch(err){
+        newt(err);
+    }
+}
+
+export const passwordCheck = async(req,res,next)=>{
+    try{
+        const user = await User.findById( req.params.id);
+        if(!user)return next (createError(404, "Користувача не знайдено!"));
+        const isPasswordCorrect = await bcrypt.compare(
+            req.body.password,
+            user.password
+        );
+        if(!isPasswordCorrect){
+            return next(createError(400, "Неправильний пароль або ім'я"));
+        }else{
+            res.status(200).json(user)
+        }
+
+    }catch(err){
+        next(err);
+    }
+    
 
 }
 
@@ -56,3 +93,4 @@ export const logout = (req,res)=>{
     }).status(200).json("Користувач вийшов з акаунта")
     console.log("Ви вийшли з акаунта")
 }
+

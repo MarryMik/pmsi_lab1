@@ -23,6 +23,8 @@
         @include size(400, 100);
         font-family:OpenSans;
         font-weight: 400;
+        background-color: $lightest_color;
+        @include shadow(0,0,5,5,  rgb(255, 255, 255));
         @include font_size(25, 5);
         &:hover{
          cursor: pointer;
@@ -39,6 +41,8 @@
         font-family:OpenSans;
         font-weight: 400;
         @include font_size(25, 5);
+        background-color: $lightest_color;
+        @include shadow(0,0,5,5,  rgb(255, 255, 255));
         &:hover{
          cursor: pointer;
          border: 10px solid;

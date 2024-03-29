@@ -7,4 +7,33 @@
         background-color: $black_color;
         color: white;
     }
+    &__menu{
+        position: relative;
+        &_wrap{
+            display: flex;
+            gap: 3px;
+        }
+    }
+    &__info{
+        position: absolute;
+        margin-top: 3px;
+        display: none;
+        background-color: $lightest_color;
+        font-family: OpenSans;
+        &:hover{
+            cursor: pointer;
+            @include shadow(0,0,2,2,  rgb(255, 255, 255, 0.8));
+        }
+    }
+    &__detail, &__login, &__register, &__exit, &__passwordChange, &__account{
+        background-color: $black_color;
+        border: 1.5px solid $lightest_color;
+        color: white;
+        font-family: OpenSans;
+        &:hover{
+            cursor: pointer;
+            @include shadow(0,0,2,2,  rgb(255, 255, 255, 0.8));
+        }
+    }
+
 }

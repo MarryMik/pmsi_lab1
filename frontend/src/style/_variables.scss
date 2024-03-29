@@ -15,8 +15,20 @@ $trtmnt_bckgr: #ceffcd;
 $record_bcrgr: #feffcd;
 $procedure_bcrgr: #ffcddf;
 $appointment_color: #82ef80;
-$black_color: #000000;
+
 
 $font_color: #475ead; 
-$background: #5723a9;
+$background: rgba(69,9,121);
 $error_color: #F11320;
+$black_color: #000000;
+$dark_color: rgba(2,0,36,1);
+$less_darc_color: rgba(39,7,65);
+$lightest_color: #87db82;
+$brightest_color_green:rgb(86, 235, 111);
+$brightest_color_pink: #d53a9d;
+$brightest_color_purple: #743ad5;
+$background_gradient: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(69,9,121,0.9374674797058106) 35%, rgba(39,7,65,0.9093424797058105) 56%, rgba(0,0,0,1) 100%);
+$button_gradient: linear-gradient(to left, #743ad5, #d53a9d);
+
+
+

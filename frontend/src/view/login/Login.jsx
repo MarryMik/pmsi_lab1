@@ -29,17 +29,16 @@ const Login = ()=>{
         <div className='login'>
         <div className='login__box'>
           <form className='login__form'>
-            <div className='login__field'>
+            
               <p className='login__text'>Логін:</p>
               <input type='text' className='login__input' name='name' onChange={handleChange} placeholder="Введіть ім'я"/>
-            </div>
-            <div className='login__field'>
+            
               <p className='login__text'>Пароль:</p>
               <input type='password' className='login__input'  name='password' onChange={handleChange} placeholder='Введіть пароль'/>
-            </div>
+            
             <div className='login__field_bottom'>
               <p className='login__text_error'>{err}</p>
-              <button className='login__buttom' onClick={handleLogin}> Увійти </button>
+              <button className='login__button' onClick={handleLogin}> Увійти </button>
             </div>
           </form>
         </div>
