@@ -26,6 +26,7 @@ export const login = async (req, res, next)=>{
     try{
         const user = await User.findOne({name: req.body.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
+        if(!user.status)return next (createError(404, "Користувача заблоковано"));
         const isPasswordCorrect = await bcrypt.compare(
             req.body.password,
             user.password
@@ -61,7 +62,7 @@ export const passwordUpdate = async(req, res, next)=>{
         )
         res.status(200).json("Пароль було відновлено");
     }catch(err){
-        newt(err);
+        next(err);
     }
 }
 

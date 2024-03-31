@@ -6,11 +6,13 @@ import { AuthContext } from './context/authContext';
 import Home from './view/home/Home';
 import Header from './components/header/header1';
 import Header2 from './components/header/header2';
+import Header3 from './components/header/header3';
 import Login from './view/login/Login';
 import Register from './view/register/Register';
 import Dashboard from './view/dashboard/Dashboard';
 import PasswordChange from './view/passwordChange/PasswordChange';
 import Account from './view/account/Account'
+import AddUser from './view/addUser/addUser';
 import { RouterProvider } from 'react-router-dom';
 
 function App() {
@@ -35,7 +37,7 @@ function App() {
   const Layout3 =()=>{
     return(
       <QueryClientProvider client={queryClient}>
-        <Header2/>
+        <Header3/>
         <Outlet/>
       </QueryClientProvider>
     )
@@ -45,9 +47,9 @@ const UserFilter =({children})=>{
   if(!currentUser ){
     return <Navigate to="/" />;
   }else{
-    if (currentUser.type==='admin'){
+    if (currentUser.type==='user'){
       return <Layout2 />
-    }else if (currentUser.type==='user'){
+    }else if (currentUser.type==='admin'){
       return <Layout3 />
     }
   }
@@ -91,12 +93,20 @@ const router = createBrowserRouter([
     children:[
       {        
         path:"/account",
-        element: <Dashboard />
+        element: <Account />
       },
       {
         path:"/passwordChange",
         element: <PasswordChange />
-      }
+      },
+      {
+        path:"/dachboard",
+        element: <Dashboard />
+      },
+      {
+        path:"/newuser",
+        element: <AddUser/>
+      },
     ]
   },
 ]);

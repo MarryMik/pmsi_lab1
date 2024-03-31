@@ -32,53 +32,61 @@ const Register =()=>{
         passwCheck.current.style.borderWidth="3px";
         passwCheck.current.style.borderStyle="solid";
         submitRef.current.style.pointerEvents = 'none';
+        submitRef.current.disabled = true;
         errorRef.current.innerText="Введіть коректний пароль!";
       }else if (passw.passwCheck===inputs.password && passw.passwCheck!==""){
         passwCheck.current.style.borderWidth="0px";
         submitRef.current.style.pointerEvents = 'auto';
+        submitRef.current.disabled = false;
         errorRef.current.innerText="";
       }
 
       if(restrictionUser===true){
         if(regex.test(inputs.password)){
             errorRef.current.innerText="";
+            submitRef.current.disabled = false;
         }else{
-
+          submitRef.current.disabled = true;
             errorRef.current.innerText="! Новий пароль має відповідати наступним обмеженням: Чергування букв, знаків пунктуації та знову букв";
         }
       }
   }
     const handleClick = async (e) => {
       e.preventDefault();
-      if(restrictionUser===null){
-        if(inputs.name.length>0){
+      if(restrictionUser!==null){
+        if(errorRef.current.innerText===""&& inputs.password===passw.passwCheck ){
           try{
-              const res = await axios.get("http://localhost:3300/auth/restriction/", {
-                  params: {
-                    name: inputs.name,
-                  }}).then((resp)=>{
-                  setRestriction(resp.data);  
-  
-              });
-              
+              await axios.put("http://localhost:3300/auth/newpassword",inputs).then(res=>{
+                  if(res.data=="Пароль було відновлено"){
+                      alert(res.data);
+                      navigate("/login");
+                  }else{
+                      alert("Щось пішло не так!");
+                  }
+              })
           }catch(err){
-              console.log(err);
+              setErr(err.response.data.message)
           }
       }
-      
+
     }else{
-      if(regex.test(inputs.password)&& inputs.password===passw.passwCheck ){
+      if(inputs.name.length>0){
         try{
-            await axios.put("http://localhost:3300/auth/newpassword",inputs).then(res=>{
-                if(res.data=="Пароль було відновлено"){
-                    alert(res.data);
-                    navigate("/login");
-                }else{
-                    alert("Щось пішло не так!");
-                }
-            })
+            const res = await axios.get("http://localhost:3300/auth/restriction/", {
+                params: {
+                  name: inputs.name,
+                }}).then((resp)=>{
+                  console.log(resp.data);
+                  if(resp.data){
+                    setRestriction(resp.data);  
+                  }else{
+                    setRestriction(false);  
+                  }
+                  console.log(restrictionUser);                 
+            });
+            
         }catch(err){
-            setErr(err.response.data.message)
+            console.log(err);
         }
     }
     }    

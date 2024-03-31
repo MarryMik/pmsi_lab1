@@ -9,14 +9,14 @@ const UserSchema=new Schema({
     },
     password: {
         type: String,
-        required: true
+        //required: true
     },
     type: {
         type: String,
         required: true
     },
     status:{
-        type: String,
+        type: Boolean,
         required: true
     },
     restriction:{

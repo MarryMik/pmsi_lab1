@@ -25,7 +25,7 @@
             @include shadow(0,0,2,2,  rgb(255, 255, 255, 0.8));
         }
     }
-    &__detail, &__login, &__register, &__exit, &__passwordChange, &__account{
+    &__detail, &__login, &__register, &__exit, &__passwordChange, &__account, &__button{
         background-color: $black_color;
         border: 1.5px solid $lightest_color;
         color: white;
