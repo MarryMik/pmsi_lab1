@@ -1,0 +1,19 @@
+@import "../../style/fonts";
+@import "../../style/variables";
+@import "../../style/functions";
+
+.account{
+    background: $button_gradient;
+    @include padding(0,0,330,0);
+    &__wrap{
+        display: flex;
+        align-items: center;
+    }
+    &__text{
+        @include margin(0, 0, 0, 90);
+        color: white;
+        @include font_size(60,60);
+        font-family: Volkhov;
+        font-weight: 600;
+    }
+}

@@ -1,0 +1,66 @@
+@import "../../style/fonts";
+@import "../../style/variables";
+@import "../../style/functions";
+
+.dashboard{
+    background: $button_gradient;
+
+    &__filter{
+        @include margin(0,0,10,10);
+    }
+    
+    &__search{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        &_input{
+            @include margin(10,30,10,10);
+            @include size(550, 25);
+        }
+        &_button{
+            @include size(150, 30);
+            &:hover{
+                cursor: pointer;
+                background-color: $background;
+                color: white;
+
+            }
+        }
+    }
+    &__left-button{
+        background-image: url("../../style/img/arrow_black.svg");
+        background-repeat: no-repeat;
+        background-size: find-size(87.13, 100vw, $width-main) find-size(94.34,100vh, $height-main );
+        @include size(87.13,94.34);
+        background-color: transparent;
+        transform: rotate(-90deg);
+        
+        &:hover{
+            background-image: url('../../style/img/arrow_white.svg');
+            transform: rotate(-90deg);
+            cursor: pointer;
+        }
+    }
+    &__right-button{
+        background-image: url("../../style/img/arrow_black.svg");
+        background-repeat: no-repeat;
+        background-size: find-size(87.13, 100vw, $width-main) find-size(94.34,100vh, $height-main );
+        @include size(87.13,94.34);
+        background-color: transparent;
+        transform: rotate(90deg);
+        &:hover{
+            background-image: url('../../style/img/arrow_white.svg');
+            transform: rotate(90deg);
+            cursor: pointer;
+        }
+    }
+    &__main_wrap{
+        @include margin(100,0,0,0);
+        position: absolute;
+        left: 13%;
+        top: 8%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+}

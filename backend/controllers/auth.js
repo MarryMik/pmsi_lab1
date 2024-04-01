@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import jwt from "jsonwebtoken";
 import {createError} from "../utils/error.js"
 import bcrypt from "bcryptjs";
+import { writeUsers } from "../utils/fileCreate.js";
 
 export const register = async (req,res, next)=>{
     try{
@@ -61,6 +62,7 @@ export const passwordUpdate = async(req, res, next)=>{
             {password: hash}
         )
         res.status(200).json("Пароль було відновлено");
+        writeUsers();
     }catch(err){
         next(err);
     }

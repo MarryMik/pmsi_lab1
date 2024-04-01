@@ -1,11 +1,11 @@
-//змінні характкристик розмірів екрану
+
 $width-main: 1788;
 $width-medium: 1081;
 $width-mini: 760;
 $height-main: calc(($width-main*9)/16);
 $height-medium: calc(($width-medium*9)/16);
 $height-mini: calc(($width-mini*9)/16);
-//змінні всіх кольорів
+
 $main_color: #53c8ed;
 $form_back_color: #b7b9b9;
 $form_input_color: #D9D9D9;

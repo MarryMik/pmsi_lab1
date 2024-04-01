@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 import { createError } from "../utils/error.js";
-
+import { writeUsers } from "../utils/fileCreate.js";
 export const updateUser = async (req, res,next)=>{
     try{
 
@@ -11,7 +11,7 @@ export const updateUser = async (req, res,next)=>{
             {$set: req.body}
         );
         res.status(200).json(updateUser);
-
+         writeUsers();   
     }catch(err){
         next(err);
     }
@@ -22,6 +22,7 @@ export const deleteUser = async (req, res, next)=>{
     try{
         await User.findByIdAndDelete(req.params.id);
         res.status(200). json("Користувача було видалено");
+        writeUsers();
     }catch(err){
         next(err);
     }
@@ -56,7 +57,8 @@ export const createUser = async (req, res,next)=>{
             password: ""
         });
         await newUser.save();
-        res.status(200).send("Користувач був створений.")
+        res.status(200).send("Користувач був створений.");
+        writeUsers();
     }catch(err){
         next(err);
     }

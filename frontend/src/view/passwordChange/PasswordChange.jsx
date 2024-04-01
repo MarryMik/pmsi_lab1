@@ -89,6 +89,7 @@ const ChangePassw = async (e)=>{
             await axios.put("http://localhost:3300/auth/newpassword",nPassw).then(res=>{
                 if(res.data=="Пароль було відновлено"){
                     alert(res.data);
+                    window.location.reload();
                 }else{
                     alert("Щось пішло не так!");
                 }
@@ -106,21 +107,21 @@ const ChangePassw = async (e)=>{
     return(
         <div className="pass-ch">
             <div className="pass-ch__wrap">
-                <form className="passw-ch__old_wrap">
+                <form className="pass-ch__old_wrap">
                     <p className="pass-ch__text">Уведіть старий пароль</p>
-                    <input className="passw-ch__old-passw" type="password" name="password" ref={oldPassw} onChange={olpPasswChange}/>
-                    <button className="passw-ch__check-old-passw" onClick={checkOldPassw}>Перевірити</button>
+                    <input className="pass-ch__old-passw" type="password" name="password" ref={oldPassw} onChange={olpPasswChange}/>
+                    <button className="pass-ch__check-old-passw" onClick={checkOldPassw}>Перевірити</button>
                     <p className='form__text_error' ref={errorRef}>{err}</p>
                 </form>
                 <p className='paasw__continue' ref={permissionContinue}><br/></p>
                  
-                <form className="passw-ch__new_wrap">
+                <form className="pass-ch__new_wrap">
                     <p className="pass-ch__text">Уведіть новий пароль</p>
-                    <input className="passw-ch__new-passw" name="password" type="password"  ref={passwordRef} onChange={handleChange} />
+                    <input className="pass-ch__new-passw" name="password" type="password"  ref={passwordRef} onChange={handleChange} />
                     <p className="pass-ch__text">Уведіть новий пароль ще раз</p>
-                    <input className="passw-ch__new-passw_chech"  type="password" name='passwCheck'   onChange={CheckPassword} ref={passwCheck}/>
+                    <input className="pass-ch__new-passw_chech"  type="password" name='passwCheck'   onChange={CheckPassword} ref={passwCheck}/>
                     
-                    <button className="passw-ch__check-old-passw" ref={submitRef} onClick={ChangePassw}>Змінити</button>
+                    <button className="pass-ch__check-old-passw" ref={submitRef} onClick={ChangePassw}>Змінити</button>
                     <p className='form__text_error' ref={errorRef}>{err}</p>
                 </form>
             </div>

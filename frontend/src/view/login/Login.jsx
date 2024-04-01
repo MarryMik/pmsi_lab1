@@ -15,6 +15,7 @@ const Login = ()=>{
     const navigate = useNavigate();
     const handleChange = (e) =>{
         setInputs((prev) =>({...prev, [e.target.name]: e.target.value}));
+        setErr("");
     };
     const {login} = useContext(AuthContext);
     const handleLogin = async(e) =>{
@@ -42,8 +43,6 @@ const Login = ()=>{
         
     } 
     
-    
-    console.log(counter)
     if(counter===3){
       navigate("/");
     }

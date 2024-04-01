@@ -12,5 +12,5 @@ router.get("/", verifyAdmin, getUsers);
 router.get("/:id", verifyUser, getUser);
 router.delete("/:id", verifyAdmin, deleteUser);
 router.put("/api/:id", verifyUser, updateUser);
-router.post("/new", verifyAdmin, createUser)
+router.post("/new", verifyUser, createUser)
 export default router;

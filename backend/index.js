@@ -4,16 +4,20 @@ import authRoute from "./routers/auth.js"
 import usersRoute from "./routers/users.js"
 import cookieParser from "cookie-parser";
 import cors from "cors"
+import { writeUsers } from "./utils/fileCreate.js";
+
 const app = express();
 
 const connect = async ()=>{
     try{
-
+        
         console.log("Підключено до бази даних.")
+       
     }catch(error){
         throw error;
     }
 }
+writeUsers();
 mongoose.connection.on("disconnected", ()=>{
     console.log("mongoDB відключено")
 });
