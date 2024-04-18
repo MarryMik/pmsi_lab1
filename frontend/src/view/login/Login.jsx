@@ -4,6 +4,7 @@ import {useContext, useState} from 'react'
 import { AuthContext } from '../../context/authContext';
 import {Link, useNavigate} from "react-router-dom";
 import axios from 'axios';
+import { cryptPassw } from '../../context/passwCrypt';
 
 const Login = ()=>{
     const [counter, setCounter]=useState(0);
@@ -11,6 +12,10 @@ const Login = ()=>{
         name: "",
         password: "",
     });
+    const [inputs2, setInputs2]= useState({
+      name:"",
+      password: "",
+  });
     const [err, setErr]= useState (null);
     const navigate = useNavigate();
     const handleChange = (e) =>{
@@ -31,8 +36,21 @@ const Login = ()=>{
           })
         }else{
           try{
-            await login(inputs);
-            navigate("/account")
+            await axios.get("http://localhost:3300/auth/password", {
+              params:{
+                check: 1,
+              }
+            }).then(async(res)=>{
+              if(res.data){
+                let key = cryptPassw(inputs.password,res.data);
+                setInputs2({name: inputs.name, password: key});
+                await login({name: inputs.name, password: key});
+                navigate("/account")
+              }
+             
+            })
+
+            
           }catch(err){
               setErr(err.response.data.message)
               console.log(err.response.data);

@@ -4,15 +4,16 @@ import {createError} from "../utils/error.js"
 import bcrypt from "bcryptjs";
 import { writeUsers } from "../utils/fileCreate.js";
 
+import { crypt } from "../utils/cryps.js";
+import { randNumb } from "../utils/cryps.js";
+let rand;
 export const register = async (req,res, next)=>{
     try{
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(req.body.password, salt);
+       // const salt = bcrypt.genSaltSync(10);
+        //const hash = bcrypt.hashSync(req.body.password, salt);
         const newUser = new User({
             ...req.body,
-            //type: "admin",
-            //status:"active",
-            password: hash,
+            //password: hash,
         });
 
         await newUser.save();
@@ -28,10 +29,9 @@ export const login = async (req, res, next)=>{
         const user = await User.findOne({name: req.body.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
         if(!user.status)return next (createError(404, "Користувача заблоковано"));
-        const isPasswordCorrect = await bcrypt.compare(
-            req.body.password,
-            user.password
-        );
+
+        const isPasswordCorrect = req.body.password===crypt(user.password, rand)? true : false;
+        console.log("isPasswordCorrect="+isPasswordCorrect);
         if(!isPasswordCorrect){
             return next(createError(400, "Неправильний пароль або ім'я"));
         }
@@ -55,11 +55,11 @@ export const passwordUpdate = async(req, res, next)=>{
     try{
         const user = await User.findOne({name: req.body.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(req.body.password, salt);
+        //const salt = bcrypt.genSaltSync(10);
+        //const hash = bcrypt.hashSync(req.body.password, salt);
         const updatePassw = await User.findByIdAndUpdate(
             user._id,
-            {password: hash}
+            {password: req.body.password}
         )
         res.status(200).json("Пароль було відновлено");
         writeUsers();
@@ -69,13 +69,18 @@ export const passwordUpdate = async(req, res, next)=>{
 }
 
 export const passwordCheck = async(req,res,next)=>{
+    //
+
+
     try{
         const user = await User.findById( req.params.id);
         if(!user)return next (createError(404, "Користувача не знайдено!"));
-        const isPasswordCorrect = await bcrypt.compare(
+        
+        const isPasswordCorrect = req.query.password===user.password? true : false;
+        /*const isPasswordCorrect = await bcrypt.compare(
             req.query.password,
             user.password
-        );
+        );*/
         if(!isPasswordCorrect){
             return next(createError(400, "Неправильний пароль або ім'я"));
         }else{
@@ -98,6 +103,12 @@ export const checkRestriction = async(req,res,next)=>{
     }
 }
 export const doYouHavePassw = async(req,res,next)=>{
+    console.log("check="+req.query.check);
+    if(req.query.check){
+        rand=randNumb();
+        console.log("rand="+rand);
+        res.status(200).json(rand);
+    }else{
     try{
         const user = await User.findOne({name: req.query.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
@@ -105,6 +116,7 @@ export const doYouHavePassw = async(req,res,next)=>{
     }catch(err){
         next(err);
     }
+}
 }
 
 export const logout = (req,res)=>{
