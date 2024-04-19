@@ -10,7 +10,7 @@ const app = express();
 
 const connect = async ()=>{
     try{
-       
+        
         console.log("Підключено до бази даних.")
        
     }catch(error){
