@@ -2,6 +2,7 @@ import {React, useState, useRef} from 'react';
 import "./register.scss";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import { questions } from '../../context/queshions.js';
 const Register =()=>{
   const passwordRef = useRef(null);
   const passwCheck = useRef(null);
@@ -15,6 +16,21 @@ const Register =()=>{
     const [inputs, setInputs]=useState({
         name: "",
         password: "",
+        question1:"",
+        question2:"",
+        question3:"",
+        question4:"",
+        question5:"",
+        question6:"",
+        question7:"",
+        question8:"",
+        question9:"",
+        question10:"",
+        question11:"",
+        question12:"",
+        question13:"",
+        question14:"",
+        question15:"",
     })
     const [err, setErr] = useState(null);
     const handleChange = (e) =>{
@@ -96,7 +112,52 @@ const Register =()=>{
           <form className='registration__form'>
               <p className='form__text'>Ім'я:</p>
               <input type="text" className='form__input' name="name" placeholder="Введіть ще раз ім'я" onChange={handleChange}/>
-            
+          
+              <p className='form__text'>{questions[0]}</p>
+              <input type="text" className='form__input' name="question1" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[1]}</p>
+              <input type="text" className='form__input' name="question2" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[2]}</p>
+              <input type="text" className='form__input' name="question3" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[3]}</p>
+              <input type="text" className='form__input' name="question4" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[4]}</p>
+              <input type="text" className='form__input' name="question5" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[5]}</p>
+              <input type="text" className='form__input' name="question6" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[6]}</p>
+              <input type="text" className='form__input' name="question7" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[7]}</p>
+              <input type="text" className='form__input' name="question8" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[8]}</p>
+              <input type="text" className='form__input' name="question9" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[9]}</p>
+              <input type="text" className='form__input' name="question10" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[10]}</p>
+              <input type="text" className='form__input' name="question11" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[11]}</p>
+              <input type="text" className='form__input' name="question12" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[12]}</p>
+              <input type="text" className='form__input' name="question13" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[13]}</p>
+              <input type="text" className='form__input' name="question14" placeholder="Введіть відповідь" onChange={handleChange}/>
+
+              <p className='form__text'>{questions[14]}</p>
+              <input type="text" className='form__input' name="question15" placeholder="Введіть відповідь" onChange={handleChange}/>
+
               <p className='form__text'>Пароль:</p>
               <input type="password" className='form__input' name='password'  placeholder='Введіть новий пароль' ref={passwordRef} onChange={handleChange}/>
             

@@ -1,9 +1,10 @@
 import User from "../models/user.js"; 
+import Reqisters from "../models/reqisters.js";
+import Logs from "../models/logs.js";
 import jwt from "jsonwebtoken";
 import {createError} from "../utils/error.js"
 import bcrypt from "bcryptjs";
-import { writeUsers } from "../utils/fileCreate.js";
-
+import { writeUsers,writeLogs,writeRegisters } from "../utils/fileCreate.js";
 import { crypt } from "../utils/cryps.js";
 import { randNumb } from "../utils/cryps.js";
 let rand;
@@ -57,11 +58,36 @@ export const passwordUpdate = async(req, res, next)=>{
         if(!user)return next (createError(404, "Користувача не знайдено!"));
         //const salt = bcrypt.genSaltSync(10);
         //const hash = bcrypt.hashSync(req.body.password, salt);
-        const updatePassw = await User.findByIdAndUpdate(
-            user._id,
-            {password: req.body.password}
-        )
-        res.status(200).json("Пароль було відновлено");
+        if(req.body.question1){
+            const updatePassw = await User.findByIdAndUpdate(
+                user._id,
+                {password: req.body.password,
+                 question1: req.body.question1,
+                 question2: req.body.question2,
+                 question3: req.body.question3,
+                 question4: req.body.question4,
+                 question5: req.body.question5,
+                 question6: req.body.question6,
+                 question7: req.body.question7,
+                 question8: req.body.question8,
+                 question9: req.body.question9,
+                 question10: req.body.question10,
+                 question11: req.body.question11,
+                 question12: req.body.question12,
+                 question13: req.body.question13,
+                 question14: req.body.question14,
+                 question15: req.body.question15                 
+                }
+            )
+            res.status(200).json("Користувача було відновлено");
+
+        }else{
+            const updatePassw = await User.findByIdAndUpdate(
+                user._id,
+                {password: req.body.password}
+            )
+            res.status(200).json("Пароль було відновлено");
+        }       
         writeUsers();
     }catch(err){
         next(err);

@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 import { createError } from "../utils/error.js";
-import { writeUsers } from "../utils/fileCreate.js";
+import { writeUsers,writeLogs,writeRegisters } from "../utils/fileCreate.js";
 export const updateUser = async (req, res,next)=>{
     try{
 
