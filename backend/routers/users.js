@@ -14,5 +14,5 @@ router.get("/:id", verifyUser, getUser);
 router.delete("/:id", verifyAdmin, deleteUser);
 router.put("/api/:id", verifyUser, updateUser);
 router.post("/new", verifyUser, createUser);
-router.get("/questions",checkQueshions);
+router.get("/questions/:id", checkQueshions);
 export default router;

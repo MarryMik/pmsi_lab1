@@ -65,37 +65,67 @@ export const createUser = async (req, res,next)=>{
 }
 export const checkQueshions = async (req,res,next)=>{
     try{
-        const user = await User.findOne({name: req.body.name});
-        //const user = await User.findById(req.params.id);
+        const user = await User.findById( req.params.id);
+        let queshions = [req.query.question1, req.query.question2,req.query.question3];
+        let numbers =[req.query.num1, req.query.num2, req.query.num3];
         if(!user) return next(createError(404, 'Користувач з таким іменем вже існує'));
-        if(req.body.queshions && req.body.numbers){
-            console.log(req.body.queshions)
-            console.log(req.body.numbers)
+        if(req.query.question1 && req.query.question2 && req.query.question3 && req.query.num1 && req.query.num2 && req.query.num3){
+            
             let answers =[];
             for(let i=0; i<3; i++){
-                switch(req.body.numbers[i]){
-                    case 0: answers.push(req.body.queshions[i]===user.question1)
-                    case 1: answers.push(req.body.queshions[i]===user.question2)
-                    case 2: answers.push(req.body.queshions[i]===user.question3)
-                    case 3: answers.push(req.body.queshions[i]===user.question4)
-                    case 4: answers.push(req.body.queshions[i]===user.question5)
-                    case 5: answers.push(req.body.queshions[i]===user.question6)
-                    case 6: answers.push(req.body.queshions[i]===user.question7)
-                    case 7: answers.push(req.body.queshions[i]===user.question8)
-                    case 8: answers.push(req.body.queshions[i]===user.question9)
-                    case 9: answers.push(req.body.queshions[i]===user.question10)
-                    case 10: answers.push(req.body.queshions[i]===user.question11)
-                    case 11: answers.push(req.body.queshions[i]===user.question12)
-                    case 12: answers.push(req.body.queshions[i]===user.question13)
-                    case 13: answers.push(req.body.queshions[i]===user.question14)
-                    case 14: answers.push(req.body.queshions[i]===user.question15)
+                switch(numbers[i]){
+                    case '0': 
+                        answers.push(queshions[i]===user.question1);
+                        break;
+                    case '1': 
+                        answers.push(queshions[i]===user.question2);
+                        break;
+                    case '2': 
+                        answers.push(queshions[i]===user.question3);
+                        break;
+                    case '3': 
+                        answers.push(queshions[i]===user.question4);
+                        break;
+                    case '4': 
+                        answers.push(queshions[i]===user.question5);
+                        break;
+                    case '5': 
+                        answers.push(queshions[i]===user.question6);
+                        break;
+                    case '6': 
+                        answers.push(queshions[i]===user.question7);
+                        break;
+                    case '7': 
+                        answers.push(queshions[i]===user.question8);
+                        break;
+                    case '8': 
+                        answers.push(queshions[i]===user.question9);
+                        break;
+                    case '9': 
+                        answers.push(queshions[i]===user.question10);
+                        break;
+                    case '10': 
+                        answers.push(queshions[i]===user.question11);
+                        break;
+                    case '11': 
+                        answers.push(queshions[i]===user.question12);
+                        break;
+                    case '12': 
+                        answers.push(queshions[i]===user.question13);
+                        break;
+                    case '13': 
+                        answers.push(queshions[i]===user.question14);
+                        break;
+                    case '14': 
+                        answers.push(queshions[i]===user.question15);
+                        break;
                 }
             }
-            console.log("answers: "+answers)
-            res.status(200).json(answers);
+            res.status(200).json({answer1: answers[0],
+            answer2:answers[1], answer3:answers[2] });
             
         }else{
-
+            res.status(404).json('Ви не відповіли на питання!');
         }
     }catch{
         next(err);

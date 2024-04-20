@@ -10,11 +10,8 @@ import { randNumb } from "../utils/cryps.js";
 let rand;
 export const register = async (req,res, next)=>{
     try{
-       // const salt = bcrypt.genSaltSync(10);
-        //const hash = bcrypt.hashSync(req.body.password, salt);
         const newUser = new User({
             ...req.body,
-            //password: hash,
         });
 
         await newUser.save();
@@ -32,7 +29,6 @@ export const login = async (req, res, next)=>{
         if(!user.status)return next (createError(404, "Користувача заблоковано"));
 
         const isPasswordCorrect = req.body.password===crypt(user.password, rand)? true : false;
-        console.log("isPasswordCorrect="+isPasswordCorrect);
         if(!isPasswordCorrect){
             return next(createError(400, "Неправильний пароль або ім'я"));
         }
@@ -56,8 +52,6 @@ export const passwordUpdate = async(req, res, next)=>{
     try{
         const user = await User.findOne({name: req.body.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
-        //const salt = bcrypt.genSaltSync(10);
-        //const hash = bcrypt.hashSync(req.body.password, salt);
         if(req.body.question1){
             const updatePassw = await User.findByIdAndUpdate(
                 user._id,
@@ -79,7 +73,7 @@ export const passwordUpdate = async(req, res, next)=>{
                  question15: req.body.question15                 
                 }
             )
-            res.status(200).json("Користувача було відновлено");
+            res.status(200).json("Пароль було відновлено");
 
         }else{
             const updatePassw = await User.findByIdAndUpdate(
@@ -95,18 +89,10 @@ export const passwordUpdate = async(req, res, next)=>{
 }
 
 export const passwordCheck = async(req,res,next)=>{
-    //
-
-
     try{
         const user = await User.findById( req.params.id);
         if(!user)return next (createError(404, "Користувача не знайдено!"));
-        
         const isPasswordCorrect = req.query.password===user.password? true : false;
-        /*const isPasswordCorrect = await bcrypt.compare(
-            req.query.password,
-            user.password
-        );*/
         if(!isPasswordCorrect){
             return next(createError(400, "Неправильний пароль або ім'я"));
         }else{
@@ -129,10 +115,8 @@ export const checkRestriction = async(req,res,next)=>{
     }
 }
 export const doYouHavePassw = async(req,res,next)=>{
-    console.log("check="+req.query.check);
-    if(req.query.check){
+    if(req.query.check==='1'){
         rand=randNumb();
-        console.log("rand="+rand);
         res.status(200).json(rand);
     }else{
     try{

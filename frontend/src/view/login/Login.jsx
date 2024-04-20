@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/authContext';
 import {Link, useNavigate} from "react-router-dom";
 import axios from 'axios';
 import { cryptPassw } from '../../context/passwCrypt';
+import { questStart } from '../../context/questtime';
 
 const Login = ()=>{
     const [counter, setCounter]=useState(0);
@@ -45,7 +46,9 @@ const Login = ()=>{
                 let key = cryptPassw(inputs.password,res.data);
                 setInputs2({name: inputs.name, password: key});
                 await login({name: inputs.name, password: key});
-                navigate("/account")
+                navigate("/account");
+                questStart();
+                //setTimeout(questStart(), 2000);                
               }
              
             })
