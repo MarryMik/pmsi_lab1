@@ -26,9 +26,14 @@ const Header3=()=>{
             }
         }
 
-    const logOut =() =>{
+    const logOut =async() =>{
         localStorage.removeItem("user");
         window.location.reload(false);
+        try{
+            const res = await axios.post('http://localhost:3300/auth/logout', {name: JSON.parse(localStorage.getItem('user')).name});
+        }catch(err){
+            console.log(err);
+        }
     }
     return(
         <div className='nav-bar__wrap'>
@@ -40,6 +45,8 @@ const Header3=()=>{
                         <Link to="/account"><button className='nav-bar__account'>Акаунт</button></Link>
                         <Link to="/dachboard"><button className='nav-bar__button'>Користувачі</button></Link>
                         <Link to="/newuser"><button className='nav-bar__button'>Додати користувача</button></Link>
+                        <Link to="/registerlog"><button className='nav-bar__button'>Реєстраційний журнал</button></Link>
+                        <Link to="/logginglog"><button className='nav-bar__button'>Журнал логування</button></Link>
                         
                         <button className='nav-bar__exit' onClick={logOut}>Вийти</button>
                     </div>                    

@@ -1,4 +1,6 @@
 import User from "../models/user.js";
+import Registers from"../models/reqisters.js";
+import Logs from "../models/logs.js"; 
 import { createError } from "../utils/error.js";
 import { writeUsers,writeLogs,writeRegisters } from "../utils/fileCreate.js";
 export const updateUser = async (req, res,next)=>{
@@ -10,6 +12,28 @@ export const updateUser = async (req, res,next)=>{
             user._id,
             {$set: req.body}
         );
+        if (req.body.restriction!==undefined){
+            let message1 = req.body.restriction===true?"накладено обмеження на пароль":"знято обмеження на пароль";
+            const newRegister = new Registers({
+                time: (new Date()).toString(),
+                username: req.body.name,
+                event: "зміна статусу обмеженнь на пароль",
+                message: message1
+            })
+            await newRegister.save();
+        }
+        if( req.body.status!==undefined){
+            let message2 = req.body.status===true?"користувача розблоковано":"користувача заблоковано";
+            const newRegister = new Registers({
+                time: (new Date()).toString(),
+                username: req.body.name,
+                event: "зміна статусу доступу користувача",
+                message: message2
+            })
+            await newRegister.save();
+        }
+
+
         res.status(200).json(updateUser);
          writeUsers();   
     }catch(err){
@@ -21,8 +45,16 @@ export const updateUser = async (req, res,next)=>{
 export const deleteUser = async (req, res, next)=>{
     try{
         await User.findByIdAndDelete(req.params.id);
+        const newRegister = new Registers({
+            time: (new Date()).toString(),
+            username: req.body.name,
+            event: "видалення користувача",
+            message: "успіх"
+        })
+        await newRegister.save();
         res.status(200). json("Користувача було видалено");
         writeUsers();
+        writeRegisters();
     }catch(err){
         next(err);
     }
@@ -56,9 +88,17 @@ export const createUser = async (req, res,next)=>{
             restriction: true,
             password: ""
         });
+        const newRegister = new Registers({
+            time: (new Date()).toString(),
+            username: req.body.name,
+            event: "створення користувача",
+            message: "успіх"
+        })
         await newUser.save();
+        await newRegister.save();
         res.status(200).send("Користувач був створений.");
         writeUsers();
+        writeRegisters();
     }catch(err){
         next(err);
     }
@@ -121,9 +161,19 @@ export const checkQueshions = async (req,res,next)=>{
                         break;
                 }
             }
+            let message = `відповідь на питання №${numbers[0]} ${answers[0]===true?"правильна":"неправильна"};\n
+                            відповідь на питання №${numbers[1]} ${answers[1]===true?"правильна":"неправильна"};\n
+                            відповідь на питання №${numbers[2]} ${answers[2]===true?"правильна":"неправильна"};\n  `
+            const newLogs = new Logs({
+                time: (new Date()).toString(),
+                username: req.body.name,
+                event: "надання відповідей на питання",
+                message: message
+            })
+            await newLogs.save();
             res.status(200).json({answer1: answers[0],
             answer2:answers[1], answer3:answers[2] });
-            
+            writeLogs();
         }else{
             res.status(404).json('Ви не відповіли на питання!');
         }

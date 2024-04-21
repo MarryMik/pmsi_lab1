@@ -4,7 +4,7 @@ import authRoute from "./routers/auth.js"
 import usersRoute from "./routers/users.js"
 import cookieParser from "cookie-parser";
 import cors from "cors"
-import { writeUsers } from "./utils/fileCreate.js";
+import { writeUsers, writeRegisters, writeLogs} from "./utils/fileCreate.js";
 
 const app = express();
 
@@ -18,6 +18,8 @@ const connect = async ()=>{
     }
 }
 writeUsers();
+writeRegisters();
+writeLogs();
 mongoose.connection.on("disconnected", ()=>{
     console.log("mongoDB відключено")
 });

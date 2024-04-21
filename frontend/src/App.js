@@ -14,6 +14,8 @@ import PasswordChange from './view/passwordChange/PasswordChange';
 import Account from './view/account/Account'
 import AddUser from './view/addUser/addUser';
 import { RouterProvider } from 'react-router-dom';
+import RegisterLog from './view/registerLog/RegisterLog';
+import LoggingLog from './view/loggingLog/LoggingLog';
 
 function App() {
   const queryClient = new QueryClient();
@@ -107,6 +109,14 @@ const router = createBrowserRouter([
         path:"/newuser",
         element: <AddUser/>
       },
+      {
+        path:"/registerlog",
+        element: <RegisterLog/>
+      },
+      {
+        path:"/logginglog",
+        element: <LoggingLog/>
+      }
     ]
   },
 ]);

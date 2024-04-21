@@ -26,9 +26,15 @@ const Header2=()=>{
             }
         }
 
-    const logOut =() =>{
+    const logOut =async() =>{
         localStorage.removeItem("user");
         window.location.reload(false);
+        try{
+            const res = await axios.post('http://localhost:3300/auth/logout', {name: JSON.parse(localStorage.getItem('user')).name});
+        }catch(err){
+            console.log(err);
+        }
+            
     }
     return(
         <div className='nav-bar__wrap'>
