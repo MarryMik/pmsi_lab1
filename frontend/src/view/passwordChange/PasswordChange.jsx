@@ -46,6 +46,7 @@ const PasswordChange =()=>{
             
         }catch(err){
             console.log(err);
+            permissionContinue.current.innerText="Пароль неправильний!";
         }
     }
    }
@@ -89,7 +90,12 @@ const ChangePassw = async (e)=>{
             await axios.put("http://localhost:3300/auth/newpassword",nPassw).then(res=>{
                 if(res.data=="Пароль було відновлено"){
                     alert(res.data);
-                    window.location.reload();
+                    permissionContinue.current.innerText = "";
+                    oldPassw.current.value="";
+                    passwordRef.current.value="";
+                    passwCheck.current.value="";
+                    errorRef.current.innerText = "";
+                    //window.location.reload();
                 }else{
                     alert("Щось пішло не так!");
                 }

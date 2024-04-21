@@ -66,6 +66,29 @@ const Register =()=>{
             errorRef.current.innerText="! Новий пароль має відповідати наступним обмеженням: Чергування букв, знаків пунктуації та знову букв";
         }
       }
+  
+  
+  if(inputs.question1.length===0 || 
+    inputs.question2.length===0  ||
+    inputs.question3.length===0  ||
+    inputs.question4.length===0  ||
+    inputs.question5.length===0  ||
+    inputs.question6.length===0  ||
+    inputs.question7.length===0  ||
+    inputs.question8.length===0  ||
+    inputs.question9.length===0  ||
+    inputs.question10.length===0  ||
+    inputs.question11.length===0  ||
+    inputs.question12.length===0  ||
+    inputs.question13.length===0  ||
+    inputs.question14.length===0  ||
+    inputs.question15.length===0 ) {
+      errorRef.current.innerText="Введіть відповіді на всі питання";
+      submitRef.current.disabled = true;
+    }else{
+      errorRef.current.innerText="";
+      submitRef.current.disabled = false;
+    }
   }
     const handleClick = async (e) => {
       e.preventDefault();
@@ -92,13 +115,11 @@ const Register =()=>{
                 params: {
                   name: inputs.name,
                 }}).then((resp)=>{
-                  console.log(resp.data);
                   if(resp.data){
                     setRestriction(resp.data);  
                   }else{
                     setRestriction(false);  
-                  }
-                  console.log(restrictionUser);                 
+                  }               
             });
             
         }catch(err){

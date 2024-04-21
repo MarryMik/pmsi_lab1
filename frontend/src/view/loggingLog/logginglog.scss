@@ -1,3 +1,22 @@
 @import "../../style/fonts";
 @import "../../style/variables";
 @import "../../style/functions";
+
+.log__header{
+    @include margin(60,0,0,0);
+        position: absolute;
+        left: 38%;
+        font-family: OpenSans;
+        font-weight: 900;
+    @include font_size(40, 20);
+
+}
+.logginglog{
+    @include margin(100,0,0,0);
+        position: absolute;
+        left: 13%;
+        top: 8%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+}

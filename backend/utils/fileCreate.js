@@ -1,7 +1,7 @@
 import fs from "node:fs"
 import User from "../models/user.js";
-import reqisters from "../models/reqisters.js";
-import logs from "../models/logs.js";
+import Reqisters from "../models/reqisters.js";
+import Logs from "../models/logs.js";
 export async function writeUsers() {
     try{
         const users = await User.find();
@@ -23,7 +23,7 @@ export async function writeUsers() {
 
 export async function writeLogs() {
     try{
-        const logs = await logs.find();
+        const logs = await Logs.find();
         if(logs){
             fs.writeFile('../backend/files/loggingnLog.txt', JSON.stringify(logs), err => {
                 if (err) {
@@ -42,7 +42,7 @@ export async function writeLogs() {
 
 export async function writeRegisters() {
     try{
-        const regs = await reqisters.find();
+        const regs = await Reqisters.find();
         if(regs){
             fs.writeFile('../backend/files/registrationLog.txt', JSON.stringify(regs), err => {
                 if (err) {

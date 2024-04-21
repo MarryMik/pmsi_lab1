@@ -86,7 +86,9 @@ export const passwordUpdate = async(req, res, next)=>{
     try{
         const user = await User.findOne({name: req.body.name});
         if(!user)return next (createError(404, "Користувача не знайдено!"));
+
         if(req.body.question1){
+            if(user.password) return next (createError(404, "Користувач вже зареєстрований!"));
             const updatePassw = await User.findByIdAndUpdate(
                 user._id,
                 {password: req.body.password,

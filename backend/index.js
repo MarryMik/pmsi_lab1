@@ -2,6 +2,8 @@ import express from "express";
 import mongoose from "mongoose";
 import authRoute from "./routers/auth.js"
 import usersRoute from "./routers/users.js"
+import logsRoute from "./routers/logs.js"
+import reqistRoute from "./routers/register.js"
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import { writeUsers, writeRegisters, writeLogs} from "./utils/fileCreate.js";
@@ -17,6 +19,9 @@ const connect = async ()=>{
         throw error;
     }
 }
+
+
+
 writeUsers();
 writeRegisters();
 writeLogs();
@@ -37,6 +42,8 @@ app.get('/', (req,res)=>{
 })
 app.use("/auth", authRoute);
 app.use("/users", usersRoute);
+app.use("/logs", logsRoute);
+app.use("/logs",reqistRoute);
 app.use((err,req,res,next)=>{
     const errorStatus = err.status || 500
     const errorMessage = err.message || "Щось пішло не так!"

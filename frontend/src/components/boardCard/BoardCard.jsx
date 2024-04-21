@@ -9,9 +9,11 @@ const BoardCard =({user})=>{
     const [restrictionCheck, setRestrictionCheck] = React.useState(user.restriction);
     const [status, setStatus]= React.useState({
         status: !user.status,
+        name: user.name
     });
     const [restriction,setRestriction ] = React.useState({
         restriction: !user.restriction,
+        name: user.name
     });
     const updateMutation = (upd, data)=>{
         try{

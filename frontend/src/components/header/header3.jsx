@@ -1,6 +1,7 @@
 import React , {useState, useRef} from 'react';
 import "./header.scss"
 import {Link} from "react-router-dom";
+import axios from 'axios';
 const Header3=()=>{
     const infoButt = useRef(null);
     const detailButt = useRef(null);
@@ -27,13 +28,14 @@ const Header3=()=>{
         }
 
     const logOut =async() =>{
-        localStorage.removeItem("user");
-        window.location.reload(false);
+       
         try{
             const res = await axios.post('http://localhost:3300/auth/logout', {name: JSON.parse(localStorage.getItem('user')).name});
         }catch(err){
             console.log(err);
         }
+        localStorage.removeItem("user");
+        window.location.reload(false);
     }
     return(
         <div className='nav-bar__wrap'>

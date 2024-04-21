@@ -109,7 +109,8 @@ export const checkQueshions = async (req,res,next)=>{
         let queshions = [req.query.question1, req.query.question2,req.query.question3];
         let numbers =[req.query.num1, req.query.num2, req.query.num3];
         if(!user) return next(createError(404, 'Користувач з таким іменем вже існує'));
-        if(req.query.question1 && req.query.question2 && req.query.question3 && req.query.num1 && req.query.num2 && req.query.num3){
+       
+        if(typeof(req.query.question1)!==undefined && typeof(req.query.question2)!==undefined && typeof(req.query.question3)!==undefined && req.query.num1 && req.query.num2 && req.query.num3){
             
             let answers =[];
             for(let i=0; i<3; i++){
@@ -161,12 +162,12 @@ export const checkQueshions = async (req,res,next)=>{
                         break;
                 }
             }
-            let message = `відповідь на питання №${numbers[0]} ${answers[0]===true?"правильна":"неправильна"};\n
-                            відповідь на питання №${numbers[1]} ${answers[1]===true?"правильна":"неправильна"};\n
-                            відповідь на питання №${numbers[2]} ${answers[2]===true?"правильна":"неправильна"};\n  `
+            let message = `відповідь на питання №${numbers[0]} ${answers[0]===true?"правильна":"неправильна"};
+                            відповідь на питання №${numbers[1]} ${answers[1]===true?"правильна":"неправильна"};
+                            відповідь на питання №${numbers[2]} ${answers[2]===true?"правильна":"неправильна"};  `
             const newLogs = new Logs({
                 time: (new Date()).toString(),
-                username: req.body.name,
+                username: req.query.name,
                 event: "надання відповідей на питання",
                 message: message
             })
