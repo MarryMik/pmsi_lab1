@@ -46,6 +46,7 @@ const Header2=()=>{
                         <button className='nav-bar__detail' ref={detailButt} onClick={menu}>Довідка</button>
                         <Link to="/passwordChange"><button className='nav-bar__passwordChange'>Змінити пароль</button></Link>
                         <Link to="/account"><button className='nav-bar__account'>Акаунт</button></Link>
+                        <Link to="/fileboard"><button className='nav-bar__fileboard'>Файли</button></Link>
                         <button className='nav-bar__exit' onClick={logOut}>Вийти</button>
                     </div>                    
                     <button className='nav-bar__info' ref={infoButt} onClick={info} onMouseEnter={onFocus} onMouseLeave={onBlur} >Про програму</button> 

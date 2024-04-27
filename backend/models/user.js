@@ -22,6 +22,12 @@ const UserSchema=new Schema({
         type: Boolean,
         required: true
     },
+    isDemo:{
+        type: Boolean
+    },
+    key:{
+        type: String
+    },
     question1:{
         type: String
     },

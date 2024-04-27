@@ -3,11 +3,12 @@ import mongoose from "mongoose";
 import authRoute from "./routers/auth.js"
 import usersRoute from "./routers/users.js"
 import logsRoute from "./routers/logs.js"
+import filesRoute from"./routers/files.js"
 import reqistRoute from "./routers/register.js"
 import cookieParser from "cookie-parser";
 import cors from "cors"
 import { writeUsers, writeRegisters, writeLogs} from "./utils/fileCreate.js";
-
+import multer from "multer";
 const app = express();
 
 const connect = async ()=>{
@@ -37,6 +38,22 @@ app.use(express.json())
 app.use(cors({
     origin: "http://localhost:3000",
 }))
+//організація збереження файлів в локальне сховище
+const storage = multer.diskStorage({
+    destination: function (req, file, callBack) {
+      callBack(null, "../frontend/src/upload");
+    },
+    filename: function (req, file, callBack) {
+        callBack(null, file.originalname+Date.now());
+    },
+  });
+  const upload = multer({ storage: storage });
+  app.post("/api/upload", upload.single("file"), (req, res) => {
+    const file = req.file;
+    console.log("файл завантажено");
+    res.status(200).json(file.filename);
+  });
+
 app.get('/', (req,res)=>{
     res.json("Привіт сервер!")
 })
@@ -44,6 +61,8 @@ app.use("/auth", authRoute);
 app.use("/users", usersRoute);
 app.use("/logs", logsRoute);
 app.use("/logs",reqistRoute);
+app.use("/files",filesRoute);
+
 app.use((err,req,res,next)=>{
     const errorStatus = err.status || 500
     const errorMessage = err.message || "Щось пішло не так!"

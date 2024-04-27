@@ -3,6 +3,8 @@ import Registers from"../models/reqisters.js";
 import Logs from "../models/logs.js"; 
 import { createError } from "../utils/error.js";
 import { writeUsers,writeLogs,writeRegisters } from "../utils/fileCreate.js";
+import { generateKey } from "../utils/democrypt.js";
+import { democrypt } from "../utils/democrypt.js";
 export const updateUser = async (req, res,next)=>{
     try{
 
@@ -81,12 +83,15 @@ export const createUser = async (req, res,next)=>{
     try{
         const user = await User.findOne({name: req.body.name});
         if(user) return next(createError(404, 'Користувач з таким іменем вже існує'));
+        const key = democrypt(generateKey(21),21);
         const newUser = new User({
             name: req.body.name,
             type: "user",
             status: true,
             restriction: true,
-            password: ""
+            password: "",
+            isDemo: true,
+            key: key
         });
         const newRegister = new Registers({
             time: (new Date()).toString(),
