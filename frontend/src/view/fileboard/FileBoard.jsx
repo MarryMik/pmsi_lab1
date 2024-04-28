@@ -7,9 +7,12 @@ import { useRef } from "react";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import FileCard from "../../components/fileCard/FileCard";
 import { decrypt } from "../../context/demodecrypt.js";
+import {MultiSelect} from "react-multi-select-component";
 
 const FileBoard = ()=>{
     const fileRef = useRef(null);
+    const [search, setSearch]= useState("");    
+    const [resultSearch, setReltSearch]=useState([]);
     const [selectedFile, setSelectedFile]=useState(null);
     const [inputs, setInputs]=useState({
         filename: "",
@@ -17,6 +20,12 @@ const FileBoard = ()=>{
         time:"",
         username: JSON.parse(localStorage.getItem("user")).name,
         userid: JSON.parse(localStorage.getItem("user"))._id
+    });
+    const [checked, setChecked] = React.useState({
+        timestart: false,
+        timeend: false,
+        sizestart: false,
+        sizeend: false,
     });
     const handleChange = (e)=>{
         setInputs((prev)=>({...prev, [e.target.name]:e.target.value}))
@@ -92,16 +101,92 @@ const FileBoard = ()=>{
             res=>{return res.data}
         )
     );
+    const searchFile = (e) =>{
+        e.preventDefault();
+        resultSearch.splice(0, resultSearch.length);
+        fileData.forEach((el)=>{
+            if(el.filename.includes(search)){
+                resultSearch.push(el);
+            }
+        })
+    }
 
+   
+    const handleCheckTimeUp = (e) =>{
+        setChecked((prev) => ({ ...prev, timestart: !checked.timestart , timeend: checked.timestart, sizestart: false, sizeend: false }));
+    };
+    const handleCheckTimeDown = (e) =>{
+        setChecked((prev) => ({ ...prev, timestart: checked.timeend , timeend: !checked.timeend, sizestart: false, sizeend: false }));
+    };
+    const handleCheckSizeUp = (e) =>{
+        setChecked((prev) => ({ ...prev, timestart: false , timeend: false, sizestart: !checked.sizestart, sizeend: checked.sizestart }));
+    };
+    const handleCheckSizeDown = (e) =>{
+        setChecked((prev) => ({ ...prev, timestart: false , timeend: false, sizestart: checked.sizeend, sizeend: !checked.sizeend }));
+    };
+    const [selected1, setSelected1]=useState([]);
+    const [filter, setFilter]= useState(null);   
+    //filetypes from  fileData.filename by using refr .png!!!
+    const filetypes =[];
+    const filterOn = ()=>{
+        console.log("selected "+selected1);
+       // if(selected1)
+    }
     return(
         <>
+            
             <div className="fileboard">
+            <form className="fileboard__search">
+                <input type="text"className="fileboard__search_input" value={search} onChange={(e)=>setSearch(e.target.value) } placeholder="Пошук"/>
+                <button className="fileboard__search_button" onClick={searchFile}>Знайти</button>
+            </form>
+            <form className="dashboard__sort">
+                <p className="dashboard__text">Сортувати за:</p>
+                <Checkbox
+                    label="Спочатку нові"
+                    value={checked.timestart}
+                    onChange={handleCheckTimeUp}
+                />
+                 <Checkbox
+                    label="Спочатку старі"
+                    value={checked.timeend}
+                    onChange={handleCheckTimeDown}
+                />
+                <Checkbox
+                    label="Спочатку найменші"
+                    value={checked.sizestart}
+                    onChange={handleCheckSizeUp}
+                />
+                <Checkbox
+                    label="Спочатку найбільші"
+                    value={checked.sizeend}
+                    onChange={handleCheckSizeDown}
+                />
+            </form>
+            <form className="fileboard__filter">
+                <MultiSelect 
+                    className='fileboard__filter_select'
+                    options={filetypes}
+                    value = {selected1}
+                    onChange={setSelected1}
+                    labelledBy='Select'
+                />
+                <button className="fileboard__filter_button" onClick={filterOn}>Застосувати</button>
+            </form>
                 <div className="fileboard__head">
                     <input type="file" className=' file__input_upload'  ref={fileRef} name="file" accept="image/*" onChange={uploadFile}/>
                     <button className="fileboard__newfile" onClick={addFile}>Додати</button>
                 </div>
                 <div className="fileboard__content">
-
+                    {
+                        fileErr
+                        ? "Щось пішло не так!"
+                        : fileLoading
+                        ? "завантаження"
+                        : resultSearch.length>0
+                        ? resultSearch.map((_file)=><FileCard file={_file} key={_file._id}/>)
+                        : fileData.map((_file)=><FileCard file={_file} key={_file._id}/>)
+                    }
                 </div>
             </div>
         </>

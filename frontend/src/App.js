@@ -16,6 +16,8 @@ import AddUser from './view/addUser/addUser';
 import { RouterProvider } from 'react-router-dom';
 import RegisterLog from './view/registerLog/RegisterLog';
 import LoggingLog from './view/loggingLog/LoggingLog';
+import FileBoard from './view/fileboard/FileBoard';
+import FileView from './view/fileview/FileView';
 
 function App() {
   const queryClient = new QueryClient();
@@ -86,7 +88,16 @@ const router = createBrowserRouter([
       {
         path:"/passwordChange",
         element: <PasswordChange />
+      },
+      {
+        path: "/fileboard",
+        element: <FileBoard/>
+      },
+      {
+        path: "/fileview",
+        element: <FileView/>
       }
+
     ]
   },
   {
