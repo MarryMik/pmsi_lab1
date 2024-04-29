@@ -3,6 +3,8 @@ import { createError } from "../utils/error.js";
   
 export const createFile = async(req,res,next)=>{
     try{
+        
+
         const newFile = new Files({
             time: req.body.time,
             filename: req.body.filename,
@@ -13,27 +15,20 @@ export const createFile = async(req,res,next)=>{
         await newFile.save();
         res.status(200).send("Файл було додано.");
     }catch(err){
-        next(err);
+        next(err);  
     }
 }
 
 export const getFiles = async(req,res,next)=>{
     try{
-        const files = await Files.find();
+        const files = await Files.find({userid:req.params.id});
         res.status(200).json(files);
     }catch(err){
         next(err);
     }
 }
 
-export const getFile = async(req,res,next)=>{
-    try{
-        const file = await Files.findById(req.params.id);
-        res.status(200).json(file);
-    }catch(err){
-        next(err);
-    }
-}
+
 
 export const updateFile = async(req,res,next)=>{
     try{

@@ -83,7 +83,9 @@ export const createUser = async (req, res,next)=>{
     try{
         const user = await User.findOne({name: req.body.name});
         if(user) return next(createError(404, 'Користувач з таким іменем вже існує'));
+        
         const key = democrypt(generateKey(21),21);
+
         const newUser = new User({
             name: req.body.name,
             type: "user",

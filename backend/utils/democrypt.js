@@ -18,6 +18,7 @@ const symbols = [
   }
 //функція шифрування ключа
   export function democrypt(key, n){
+    console.log("key="+key);
     const newarr=[];
     const arr = key.split("");
     arr.forEach((el,index, arr)=>{

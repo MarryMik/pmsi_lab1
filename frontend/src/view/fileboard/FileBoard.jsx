@@ -7,29 +7,21 @@ import { useRef } from "react";
 import Checkbox from "../../components/Checkbox/Checkbox";
 import FileCard from "../../components/fileCard/FileCard";
 import { decrypt } from "../../context/demodecrypt.js";
-import {MultiSelect} from "react-multi-select-component";
 
 const FileBoard = ()=>{
     const fileRef = useRef(null);
     const [search, setSearch]= useState("");    
     const [resultSearch, setReltSearch]=useState([]);
     const [selectedFile, setSelectedFile]=useState(null);
-    const [inputs, setInputs]=useState({
-        filename: "",
-        size:"",
-        time:"",
-        username: JSON.parse(localStorage.getItem("user")).name,
-        userid: JSON.parse(localStorage.getItem("user"))._id
-    });
+    
     const [checked, setChecked] = React.useState({
+        all: true,
         timestart: false,
         timeend: false,
         sizestart: false,
         sizeend: false,
     });
-    const handleChange = (e)=>{
-        setInputs((prev)=>({...prev, [e.target.name]:e.target.value}))
-    }
+   
     const uploadFile= async(e)=>{
         //перевірка умови обмежень на розмір файлу
         const isDemo = JSON.parse(localStorage.getItem("user")).isDemo;
@@ -38,9 +30,8 @@ const FileBoard = ()=>{
             let key = window.prompt("Ви наразі використуовуєте демоверсію, де розмір файлу не може перевищувати 100кБ. Щоб розблокувати обмеження введіть ключ:");
             //функція для активації ключем
             try{
-                const userKey = await makeRequest.get("/users/"+JSON.parse(localStorage.getItem("user"))._id).key;
-                console.log("userKey "+userKey);
-                if(key===decrypt(userKey, 21)){
+                const userKey = await makeRequest.get("/users/"+JSON.parse(localStorage.getItem("user"))._id);
+                if(key===decrypt(userKey.data.key, 21)){
                     try{
                         await makeRequest.put("/users/api/"+JSON.parse(localStorage.getItem("user"))._id, {isDemo:false});
                         const retrievedString = localStorage.getItem("user");
@@ -48,6 +39,8 @@ const FileBoard = ()=>{
                         parsedObject.isDemo = false;
                         const modifiedndstrigifiedForStorage = JSON.stringify(parsedObject);
                         localStorage.setItem("user", modifiedndstrigifiedForStorage);
+                        window.alert("вірний ключ!");
+                        setSelectedFile(e.target.files[0]);
                     }catch(err){
                         console.log(err);
                     }  
@@ -82,13 +75,16 @@ const FileBoard = ()=>{
         let fileURL;       
         if(selectedFile){
             fileURL = await upload(selectedFile);
-            setInputs((prev)=>({...prev,
-                ["filename"]: fileURL,
-                ["size"]: selectedFile.size,
-                ["time"]: (new Date()).toString()
-                }));
             try{
-                const newFile = makeRequest.post("/files/new", inputs);
+                const newFile = makeRequest.post("/files/new", {
+                    filename: fileURL,
+                    size:selectedFile.size,
+                    time:(new Date()).toString(),
+                    username: JSON.parse(localStorage.getItem("user")).name,
+                    userid: JSON.parse(localStorage.getItem("user"))._id
+                });
+                fileRef.current.value=null;
+
             }catch(err){
                 console.log(err);
             }
@@ -97,10 +93,14 @@ const FileBoard = ()=>{
     }
 
     const {isLoading: fileLoading, error: fileErr, data: fileData} = useQuery(['files'], ()=>
-        makeRequest.get("/files/").then(
-            res=>{return res.data}
+        makeRequest.get("/files/"+JSON.parse(localStorage.getItem('user'))._id).then(
+            res=>{
+                return res.data}
+            
         )
+        
     );
+
     const searchFile = (e) =>{
         e.preventDefault();
         resultSearch.splice(0, resultSearch.length);
@@ -113,25 +113,41 @@ const FileBoard = ()=>{
 
    
     const handleCheckTimeUp = (e) =>{
-        setChecked((prev) => ({ ...prev, timestart: !checked.timestart , timeend: checked.timestart, sizestart: false, sizeend: false }));
+        setChecked((prev) => ({ ...prev, all: checked.timestart, timestart: !checked.timestart , timeend: false, sizestart: false, sizeend: false }));
     };
     const handleCheckTimeDown = (e) =>{
-        setChecked((prev) => ({ ...prev, timestart: checked.timeend , timeend: !checked.timeend, sizestart: false, sizeend: false }));
+        setChecked((prev) => ({ ...prev, all: checked.timeend, timestart: false , timeend: !checked.timeend, sizestart: false, sizeend: false }));
     };
     const handleCheckSizeUp = (e) =>{
-        setChecked((prev) => ({ ...prev, timestart: false , timeend: false, sizestart: !checked.sizestart, sizeend: checked.sizestart }));
+        setChecked((prev) => ({ ...prev, all: checked.sizestart , timestart: false , timeend: false, sizestart: !checked.sizestart, sizeend: false}));
     };
     const handleCheckSizeDown = (e) =>{
-        setChecked((prev) => ({ ...prev, timestart: false , timeend: false, sizestart: checked.sizeend, sizeend: !checked.sizeend }));
+        setChecked((prev) => ({ ...prev, all: checked.sizeend, timestart: false , timeend: false, sizestart: false, sizeend: !checked.sizeend }));
     };
-    const [selected1, setSelected1]=useState([]);
-    const [filter, setFilter]= useState(null);   
-    //filetypes from  fileData.filename by using refr .png!!!
-    const filetypes =[];
-    const filterOn = ()=>{
-        console.log("selected "+selected1);
-       // if(selected1)
-    }
+    const handleCheck = (e) =>{
+        setChecked((prev) => ({ ...prev, all: true,  timestart: false , timeend: false, sizestart: false, sizeend: false }));
+    };
+   
+    function compareName(a,b){
+        return  b.filename-a.filename;
+      }
+    function compareSizeUp(a,b){
+        return a.size - b.size;
+      }
+      function compareSizeDown(a,b){
+        return b.size - a.size;
+      }
+      
+      function compareDateUp(a,b){
+        const a1 = new Date(a.time);
+        const b1 = new Date(b.time)
+        return a1-b1;
+      }
+      function compareDateDown(a,b){
+        const a1 = new Date(a.time);
+        const b1 = new Date(b.time)
+        return b1-a1;
+      }
     return(
         <>
             
@@ -140,8 +156,13 @@ const FileBoard = ()=>{
                 <input type="text"className="fileboard__search_input" value={search} onChange={(e)=>setSearch(e.target.value) } placeholder="Пошук"/>
                 <button className="fileboard__search_button" onClick={searchFile}>Знайти</button>
             </form>
-            <form className="dashboard__sort">
-                <p className="dashboard__text">Сортувати за:</p>
+            <form className="fileboard__sort">
+                <p className="fileboard__text">Сортувати за:</p>
+                <Checkbox
+                    label="За назвою"
+                    value={checked.all}
+                    onChange={handleCheck}
+                />
                 <Checkbox
                     label="Спочатку нові"
                     value={checked.timestart}
@@ -163,17 +184,9 @@ const FileBoard = ()=>{
                     onChange={handleCheckSizeDown}
                 />
             </form>
-            <form className="fileboard__filter">
-                <MultiSelect 
-                    className='fileboard__filter_select'
-                    options={filetypes}
-                    value = {selected1}
-                    onChange={setSelected1}
-                    labelledBy='Select'
-                />
-                <button className="fileboard__filter_button" onClick={filterOn}>Застосувати</button>
-            </form>
+            
                 <div className="fileboard__head">
+                    <p className="fileboard__text">Додати новий файл:</p>
                     <input type="file" className=' file__input_upload'  ref={fileRef} name="file" accept="image/*" onChange={uploadFile}/>
                     <button className="fileboard__newfile" onClick={addFile}>Додати</button>
                 </div>
@@ -185,7 +198,17 @@ const FileBoard = ()=>{
                         ? "завантаження"
                         : resultSearch.length>0
                         ? resultSearch.map((_file)=><FileCard file={_file} key={_file._id}/>)
-                        : fileData.map((_file)=><FileCard file={_file} key={_file._id}/>)
+                        : fileData===null || fileData===undefined
+                        ? ""
+                        : checked.timestart
+                        ? fileData.sort(compareDateDown).map((_file)=><FileCard file={_file} key={_file._id}/>)
+                        : checked.timeend
+                        ? fileData.sort(compareDateUp).map((_file)=><FileCard file={_file} key={_file._id}/>)
+                        : checked.sizestart
+                        ? fileData.sort(compareSizeUp).map((_file)=><FileCard file={_file} key={_file._id}/>)
+                        : checked.sizeend
+                        ? fileData.sort(compareSizeDown).map((_file)=><FileCard file={_file} key={_file._id}/>)
+                        : fileData.sort(compareName).map((_file)=><FileCard file={_file} key={_file._id}/>)
                     }
                 </div>
             </div>

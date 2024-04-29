@@ -1,8 +1,7 @@
 import express from "express";
-import { createFile, deleteFile, getFiles, getFile, updateFile } from "../controllers/files";
+import { createFile, deleteFile, getFiles, updateFile } from "../controllers/files.js";
 const router = express.Router();
-router.get("/", getFiles);
-router.get("/:id", getFile);
+router.get("/:id", getFiles);
 router.put("/api/:id", updateFile);
 router.delete("/:id", deleteFile);
 router.post("/new",createFile);

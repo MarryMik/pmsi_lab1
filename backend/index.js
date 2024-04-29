@@ -13,7 +13,7 @@ const app = express();
 
 const connect = async ()=>{
     try{
-        
+        await mongoose.connect("mongodb+srv://mary:zahy8t@cluster0.jutmdcl.mongodb.net/zahyst?retryWrites=true&w=majority&appName=Cluster0");
         console.log("Підключено до бази даних.")
        
     }catch(error){
@@ -41,10 +41,10 @@ app.use(cors({
 //організація збереження файлів в локальне сховище
 const storage = multer.diskStorage({
     destination: function (req, file, callBack) {
-      callBack(null, "../frontend/src/upload");
+      callBack(null, "../frontend/public/upload");
     },
     filename: function (req, file, callBack) {
-        callBack(null, file.originalname+Date.now());
+        callBack(null, Date.now()+file.originalname);
     },
   });
   const upload = multer({ storage: storage });

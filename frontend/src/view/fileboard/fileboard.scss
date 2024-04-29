@@ -1,0 +1,59 @@
+@import "../../style/fonts";
+@import "../../style/variables";
+@import "../../style/functions";
+
+.fileboard{
+    background: $button_gradient;
+    &__content{
+        @include margin(120,0,0,0);
+        position: absolute;
+        left: 13%;
+        top: 8%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    &__search{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        &_input{
+            @include margin(10,30,10,10);
+            @include size(550, 25);
+        }
+        &_button{
+            @include size(150, 30);
+            &:hover{
+                cursor: pointer;
+                background-color: $background;
+                color: white;
+
+            }
+        }
+    }
+    &__sort{
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        @include margin(10,0,10,11);
+    }
+    &__head{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
+        @include margin(10,10,10,11);
+        border: solid 2px $lightest_color;
+        @include size(1300,50);
+        align-items: center;
+        @include padding(0,10,0,10);
+
+    }
+    &__newfile{
+        align-self: center;
+        justify-self: end;
+        
+    }
+}
+.file__input_upload{
+    grid-column: 2/4;
+}

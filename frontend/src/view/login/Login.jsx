@@ -47,8 +47,7 @@ const Login = ()=>{
                 setInputs2({name: inputs.name, password: key});
                 await login({name: inputs.name, password: key});
                 navigate("/account");
-                questStart();
-                //setTimeout(questStart(), 2000);                
+                //questStart();               
               }
              
             })

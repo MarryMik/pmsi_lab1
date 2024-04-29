@@ -1,0 +1,60 @@
+@import "../../style/fonts";
+@import "../../style/variables";
+@import "../../style/functions";
+
+.filecard{
+    background-color: $lightest_color;
+    @include size(1300, 300);
+    min-width: 670px;
+    height: fit-content;
+    @include margin(10,10,10,10);
+    @include padding(10,10,10,10);
+    border: solid white;
+    display: grid;
+    grid-template-columns: 10% 20% 70%;
+    grid-template-rows: 1fr 1fr 1fr 1fr; 
+    align-content: start;
+    @include font_size(20, 25);
+    &__file-img{
+        @include size(80, 80);
+        background-image: url("../../style/img/file.svg");
+        background-color: transparent;
+        background-size: cover;
+        background-repeat: no-repeat;
+        grid-row: 1/5;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    &__buttns{
+        grid-row: 5/6;
+        grid-column: 1/4;
+        display: flex;
+        justify-content:flex-end;
+    }
+    &__buttn_delete {
+        @include size(100, 20);
+        @include margin(0,10,0,10);
+        &:hover{
+            cursor: pointer;
+            @include shadow(0,0,2,2,  rgb(255, 255, 255, 0.8));
+        }
+    } 
+    &__buttn_open{
+        @include size(100, 20);
+        @include margin(0,10,0,10);
+        &:hover{
+            cursor: pointer;
+            @include shadow(0,0,2,2,  rgb(255, 255, 255, 0.8));
+        }
+
+    }
+    &__buttn_downoload{
+        @include size(100, 20);
+        @include margin(0,10,0,10);
+        &:hover{
+            cursor: pointer;
+            @include shadow(0,0,2,2,  rgb(255, 255, 255, 0.8));
+        }
+    }
+}
